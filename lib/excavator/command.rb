@@ -44,9 +44,8 @@ module Excavator
       @params            = {}
     end
 
-    def add_param(param_name, options = {})
-      # TODO remove this coupling of Param
-      self.param_definitions << Param.new(param_name, options)
+    def add_param(param)
+      self.param_definitions << param
     end
 
     def execute(*inputs)

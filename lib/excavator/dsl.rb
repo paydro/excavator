@@ -12,7 +12,7 @@ module Excavator
     end
 
     def param(name, options = {})
-      Excavator.runner.last_command.add_param(name, options)
+      Excavator.runner.last_command.add_param(Param.new(name, options))
     end
 
     def command(name, &block)

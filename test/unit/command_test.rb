@@ -45,8 +45,8 @@ context "Command" do
   test "#execute_with_params runs a command's block" do
     cmd = Command.new(Excavator.runner).tap do |c|
       c.name = "test"
-      c.add_param :name
-      c.add_param :server
+      c.add_param(Param.new(:name))
+      c.add_param(Param.new(:server))
       c.block = Proc.new do
         [params[:name], params[:server]]
       end
@@ -59,8 +59,8 @@ context "Command" do
   test "#execute_with_params throws error when missing param" do
     cmd = Command.new(Excavator.runner).tap do |c|
       c.name = "test"
-      c.add_param :name
-      c.add_param :server
+      c.add_param(Param.new(:name))
+      c.add_param(Param.new(:server))
       c.block = Proc.new do
         [params[:name], params[:server]]
       end
