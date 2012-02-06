@@ -20,4 +20,5 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "minitest", ">= 2.10.0"
   s.add_development_dependency "ruby-debug19"
+  s.add_development_dependency "rake"
 end

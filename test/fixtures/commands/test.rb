@@ -16,5 +16,3 @@ namespace :first do
   end
 end
 
-
-

@@ -8,7 +8,13 @@ require 'minitest/spec'
 require 'minitest/autorun'
 require 'minitest/mock'
 
+require 'ruby-debug'
+Debugger.start
+
 module TestHelpers
+  def basedir
+    Pathname.new(__FILE__).join("..", "..").expand_path
+  end
 end
 
 # I like #context more than #describe
