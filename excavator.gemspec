@@ -8,10 +8,11 @@ Gem::Specification.new do |s|
   s.authors     = ["Peter Bui"]
   s.email       = ["peter@paydrotalks.com"]
   s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
-
-  s.rubyforge_project = "excavator"
+  s.summary     = %q{A scripting framework for *nix systems.}
+  s.description = <<DESC
+Excavator is a scripting framework for writing multi-command executables for the
+unix environment.
+DESC
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
