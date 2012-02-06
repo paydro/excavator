@@ -73,32 +73,3 @@ context "Command" do
   end
 end # Command
 
-
-context "Command::Env" do
-  include Excavator::DSL
-
-  setup do
-    Excavator.reset!
-    Excavator.runner.command_paths = [
-      basedir.join("test", "fixtures", "commands")
-    ]
-  end
-
-  test "execute another command" do
-    cmd = command(:first) { execute :second }
-    command(:second) { "called from second" }
-    assert_equal "called from second", cmd.execute
-  end
-
-  test "execute command with params" do
-    cmd = command(:run_another_cmd) do
-      execute :my_name, :name => 'paydro'
-    end
-
-    param :name
-    command(:my_name) { params[:name] }
-
-    assert_equal "paydro", cmd.execute
-  end
-end # Command::Env
-

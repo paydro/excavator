@@ -8,10 +8,6 @@ module Excavator
     attr_reader :current_namespace
 
     def initialize
-      @command_paths = [
-        cwd.join("commands")
-      ]
-
       @namespace = Namespace.new(:default)
       @current_namespace = @namespace
     end
@@ -34,7 +30,7 @@ module Excavator
 
     def in_namespace(name)
       ns = @current_namespace.namespace(name)
-      ns = @current_namespace << Namespace.new(name) unless ns
+      ns = @current_namespace << Excavator.namespace_class.new(name) unless ns
       @current_namespace = ns
       yield
       @current_namespace = ns.parent
@@ -74,8 +70,8 @@ module Excavator
     end
 
     def display_help
-      table_view = Bulldozer::TableView.new do |t|
-        t.title "Bulldozer commands:\n"
+      table_view = Excavator::TableView.new do |t|
+        t.title "#{File.basename($0)} commands:\n"
         t.header "Command"
         t.header "Description"
         t.divider "\t"
@@ -95,11 +91,17 @@ module Excavator
     end
 
     def last_command
-      @last_command ||= Command.new(self, :namespace => current_namespace)
+      @last_command ||= Excavator.command_class.new(
+        self, :namespace => current_namespace
+      )
     end
 
     def clear_last_command!
       @last_command = nil
+    end
+
+    def command_paths
+      @command_paths = Excavator.command_paths || [cwd.join("commands")]
     end
   end # Runner
 end

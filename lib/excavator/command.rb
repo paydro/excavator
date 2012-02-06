@@ -1,24 +1,6 @@
 require 'timeout'
 module Excavator
   class Command
-
-    class Env
-      attr_reader :runner, :params, :unparsed_params, :raw_params
-
-      def initialize(options = {})
-        @runner          = options[:runner]
-        @params          = options[:params]
-        @raw_params      = options[:raw_params]
-        @unparsed_params = options[:unparsed_params]
-      end
-
-      # Execute another command
-      def execute(command, params = {})
-        command = runner.find_command(command)
-        command.execute(params)
-      end
-    end
-
     # Descriptors
     attr_accessor :name, :desc, :namespace
 
@@ -40,7 +22,8 @@ module Excavator
       @block             = options[:block]
       @param_definitions = options[:param_definitions] || []
       @namespace         = options[:namespace]
-      @param_parser      = options[:param_parser] || ParamParser.new
+      @param_parser      = options[:param_parser] ||
+                           Excavator.param_parser_class.new
       @params            = {}
     end
 
@@ -63,7 +46,7 @@ module Excavator
 
     # Internal
     def run
-      env = Env.new(
+      env = Excavator.environment_class.new(
         :runner          => runner,
         :params          => params,
         :unparsed_params => unparsed_params,
