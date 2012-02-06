@@ -13,7 +13,7 @@ module Excavator
     end
 
     def cwd
-      Pathname.new(Dir.pwd)
+      Excavator.cwd
     end
 
     def namespaces
