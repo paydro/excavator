@@ -1,11 +1,11 @@
 # Excavator
 
 Excavator is a commandline scripting framework. It takes care of parameter
-parsing, namespacing commands and command loading so that you can focus on
+parsing, command namespacing and command loading so that you can focus on
 writing your scripts.
 
-Excavator is like a stripped down version of rake but has parameter handling
-like other unix command line utilities.
+Excavator is like a stripped down version of rake but uses optparse for
+parameter parsing.
 
 Here's a simple, albeit contrived, example of what you can do with Excavator.
 
@@ -66,15 +66,15 @@ Now you can execute the commands.
     ...
     $
 
-This works fine until your script becomes too long. You can then split your commands up in to multiple files and tell Excavator where all your commands live.
+When the commands pile up, you can move them to other files and tell Excavator where all your commands live.
 
-For instance, let's assume we have the same `my_commands` script above, but we also add a directory named `commands` in the same directory. In the commands directory, we add the commands previously included in `my_commands`. The file hiearchy now looks like this:
+For instance, let's assume we have the same `my_commands` script above, but we also add the directory `commands/`. In `commands/`, we refactor the previous commands from `my_commands`. The file hiearchy now looks like this:
 
     /Users/paydro/
-      - commands/
-        - happy_quotes.rb
-        - jokes.rb
-      - my_commands # The original file
+      commands/
+        happy_quotes.rb
+        jokes.rb
+      my_commands # The original file
 
 Now, inside `my_commands`, all we have is this:
 
@@ -83,8 +83,8 @@ Now, inside `my_commands`, all we have is this:
     Excavator.command_paths = ["/Users/paydro/commands"]
     Excavator.run(ARGV)
 
-By default, Excavator already looks into the `commands` directory of the
-current directory, but it's shown above for completeness.
+By default, Excavator already looks into the `commands/` if it exists next to
+the script, but it's shown above for completeness.
 
 ## Commands
 
@@ -110,7 +110,7 @@ Use `execute` to call other commands from within a command.
       puts "paydro"
     end
 
-You can even pass parameters to the commands with a hash.
+You can even pass parameters to other commands with a hash.
 
     # Prints "paydro"
     command :print do
@@ -125,8 +125,7 @@ You can even pass parameters to the commands with a hash.
 
 ## Command Description
 
-You can also pass a description of what the command will do before specifying
-the command.
+Describe your command using the `desc` method above the command definition.
 
     desc "Prints all the servers in the cluster"
     command :list_servers do
@@ -135,7 +134,7 @@ the command.
 
 ## Namespaces
 
-Commands can be organized via namespaces.
+Group similar or related commands via `namespace`.
 
     # Creates the following commands:
     # - servers:list
@@ -160,7 +159,7 @@ Commands can be organized via namespaces.
 
 ## Parameters
 
-Parameters are available within the command block via the `params` method.
+Parameters are available within the command body via the `params`.
 
     param :first_name
     param :last_name
@@ -196,11 +195,11 @@ Params can take descriptions so that the script can print them out with `-h`.
 
 ### Long and Short Switches
 
-Parameters are automatically assigned long and short switches unless they are
-specifically defined. The short switch is usually the first character in the
-name of the param. If there are duplicates, then it continues to move to the
-next character in the name until it finds a unique character. If it cannot find
-a unique character, then the parameter will not have a short switch.
+Parameters are assigned long and short switches unless they are specified. The
+short switch is usually the first character in the name of the param. If there
+are duplicates, then the param parser will continue to move to the next
+character in the name until it finds a unique character. If it cannot find a
+unique character, then the parameter will not have a short switch.
 
     # --abc, -a
     param :abc
@@ -236,7 +235,7 @@ calling the command.
 
 # Add Helpers For Commands
 
-Commands run inside of `Excavator::Environment`, and it has a few methods that you can use. To extend this, you can use `Excavator::Environment#modify`. This is really just a helper give you access to the `Excavator::Environment` scope (i.e., for including other modules).
+Commands run within and instance of `Excavator::Environment`, and it has a few methods that you can use. To extend this, you can use `Excavator::Environment#modify`. This is really just a helper give you access to the `Excavator::Environment` scope (i.e., for including other modules).
 
     require 'excavator'
 
