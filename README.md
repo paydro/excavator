@@ -35,6 +35,7 @@ Place the previous contents in a file named `say` and then run it:
 Excavator does not come with a commandline tool. The way to use Excavator is to first create an executable file, then add commands in the file.
 
 Creating the file:
+
     $ touch my_commands
     $ chmod a+x my_commands
 
@@ -233,3 +234,48 @@ calling the command.
     $
 
 
+# Add Helpers For Commands
+
+Commands run inside of `Excavator::Environment`, and it has a few methods that you can use. To extend this, you can use `Excavator::Environment#modify`. This is really just a helper give you access to the `Excavator::Environment` scope (i.e., for including other modules).
+
+    require 'excavator'
+
+    module Helpers
+      def hello
+        puts "hello!"
+      end
+    end
+
+    module ExpensiveHTTPCalls
+      # ...
+    end
+
+    Excavator.environment_class.modify Helpers, ExpensiveHTTPCalls
+
+    # OR
+
+    Excavator.environment_class.modify do
+      include Helpers
+    end
+
+    command :example do
+      hello
+    end
+
+# Contrib
+
+## Bugs
+
+Submit bugs [on Github][https://github.com/paydro/excavator/issues]
+
+## Hacking
+
+Please fork the [repository][https://github.com/paydro/excavator] on GitHub and send me a pull request. Here's a few guidelines:
+
+* Use 80 character columns
+* Write tests!
+* Follow other examples in the code
+
+# Credits
+
+[Peter Bui][peter@paydrotalks.com]
