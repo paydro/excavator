@@ -4,7 +4,8 @@ Excavator is a commandline scripting framework. It takes care of parameter
 parsing, namespacing commands and command loading so that you can focus on
 writing your scripts.
 
-Excavator is like a stripped down version of rake but has parameter handling like other unix command line utilities.
+Excavator is like a stripped down version of rake but has parameter handling
+like other unix command line utilities.
 
 Here's a simple, albeit contrived, example of what you can do with Excavator.
 
@@ -31,6 +32,59 @@ Place the previous contents in a file named `say` and then run it:
 
 # Usage
 
+Excavator does not come with a commandline tool. The way to use Excavator is to first create an executable file, then add commands in the file.
+
+Creating the file:
+    $ touch my_commands
+    $ chmod a+x my_commands
+
+Edit `my_commands` and add the following:
+
+    #!/usr/bin/env ruby
+    require 'excavator'
+
+    namespace :happy_quotes do
+      commands :smile do
+        # ...
+      end
+    end
+
+    namespace :jokes do
+      commands :knock_knock do
+        # ...
+      end
+    end
+
+    Excavator.run(ARGV) # This runs it
+
+Now you can execute the commands.
+
+    $ my_commands jokes:knock_knock
+    ...
+    $ my_commands happy_quotes:smile
+    ...
+    $
+
+This works fine until your script becomes too long. You can then split your commands up in to multiple files and tell Excavator where all your commands live.
+
+For instance, let's assume we have the same `my_commands` script above, but we also add a directory named `commands` in the same directory. In the commands directory, we add the commands previously included in `my_commands`. The file hiearchy now looks like this:
+
+    /Users/paydro/
+      - commands/
+        - happy_quotes.rb
+        - jokes.rb
+      - my_commands # The original file
+
+Now, inside `my_commands`, all we have is this:
+
+    #!/usr/bin/env ruby
+    require 'excavator'
+    Excavator.command_paths = ["/Users/paydro/commands"]
+    Excavator.run(ARGV)
+
+By default, Excavator already looks into the `commands` directory of the
+current directory, but it's shown above for completeness.
+
 ## Commands
 
 Commands are created with the `command` method.
@@ -42,6 +96,31 @@ Commands are created with the `command` method.
     command :another do
       # ...
     end
+
+### Call Other Commands
+
+Use `execute` to call other commands from within a command.
+
+    command :print do
+      execute :my_name
+    end
+
+    command :my_name do
+      puts "paydro"
+    end
+
+You can even pass parameters to the commands with a hash.
+
+    # Prints "paydro"
+    command :print do
+      execute :my_name, :name => "paydro"
+    end
+
+    param :name
+    command :my_name do
+      puts params[:name]
+    end
+
 
 ## Command Description
 
@@ -152,3 +231,5 @@ calling the command.
     $ servers list -h
     ... usage ...
     $
+
+
