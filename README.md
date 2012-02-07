@@ -266,11 +266,11 @@ Commands run inside of `Excavator::Environment`, and it has a few methods that y
 
 ## Bugs
 
-Submit bugs [on Github][https://github.com/paydro/excavator/issues]
+Submit bugs [on GitHub](https://github.com/paydro/excavator/issues).
 
 ## Hacking
 
-Please fork the [repository][https://github.com/paydro/excavator] on GitHub and send me a pull request. Here's a few guidelines:
+Please fork the [repository](https://github.com/paydro/excavator) on GitHub and send me a pull request. Here's a few guidelines:
 
 * Use 80 character columns
 * Write tests!
@@ -278,4 +278,4 @@ Please fork the [repository][https://github.com/paydro/excavator] on GitHub and 
 
 # Credits
 
-[Peter Bui][peter@paydrotalks.com]
+[Peter Bui](peter@paydrotalks.com)
