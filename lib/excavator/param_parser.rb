@@ -26,7 +26,7 @@ module Excavator
         opts = []
 
         # Long option
-        opts << "--#{param.name}"
+        opts << "--#{param.name.to_s.gsub("_", "-")}"
 
         # params require an argument (for now)
         opts << "=#{param.name.to_s.upcase}"

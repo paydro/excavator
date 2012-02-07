@@ -94,7 +94,7 @@ test description
 USAGE: test-command [options]
 
 REQUIRED:
-    -s, --server_id=SERVER_ID        Server instance id
+    -s, --server-id=SERVER_ID        Server instance id
 
 OPTIONAL:
     -r, --region=REGION              A region to use
