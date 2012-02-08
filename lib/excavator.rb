@@ -1,5 +1,7 @@
 require 'pathname'
 
+# Excavator automatically creates a command line parser for your params as well
+# as building a simple usage and option messages for your scripts.
 module Excavator
   class ExcavatorError < ::StandardError; end
 

@@ -1,19 +1,30 @@
 require 'timeout'
 module Excavator
+
+  # Public: A Command is building block in Excavator. Commands are built
+  # incrementally (normally via methods in Excavator::DSL).
   class Command
     # Descriptors
     attr_accessor :name, :desc, :namespace
 
-    # Block to run when command is executed
+    # The logic for the command
     attr_accessor :block
 
     # A list of Param objects
     attr_reader :param_definitions
 
+    # Public: Parsed params (parsed using ParamParser)
     attr_reader :params
+
+    # Public: An Array copy of arguments passed into this command
+    # (i.e, before ParamParser#parse! is called)
     attr_reader :raw_params
+
+    # Public: An Array of unparsed parameters. These are the left over arguments
+    # after ParamParser#parse! is called.
     attr_reader :unparsed_params
 
+    # Public: Reference to the Runner
     attr_reader :runner
 
     def initialize(runner, options = {})
@@ -28,21 +39,57 @@ module Excavator
       @params            = {}
     end
 
+    # Public: Add a Param to this command.
+    #
+    # Examples
+    #
+    #   command = Command.new
+    #   command.add_param(Param.new(:test))
+    #
+    # Returns nothing.
     def add_param(param)
       self.param_definitions << param
     end
 
-    def execute(*inputs)
-      inputs.flatten!
-      parse_params inputs
+    # Public: Execute the Command's block within a Excavator::Environment
+    # instance. Arguments are parsed, setup with default values, and checked
+    # to ensure the Command has all the proper parameters.
+    #
+    # args - An Array of arguments to pass into the block. This is normally
+    #        the same format as ARGV.
+    #
+    # Examples
+    #
+    #   command = Command.new( ... )
+    #   command.execute(["-a", "abc", "--foo", "bar"])
+    #
+    # Returns the value returned by the Command's block.
+    def execute(*args)
+      args.flatten!
+      parse_params args
       run
     end
 
+    # Public: Execute this command. This is like #execute except the parameters
+    # is a Hash.
+    #
+    # parsed_params - A Hash of params to pass into the Command's block.
+    #
+    # Examples
+    #
+    #   command = Command.new( ... )
+    #   command.execute({:a => "abc", :foo => "bar})
+    #
+    # Returns the value returned by the Command's block.
     def execute_with_params(parsed_params = {})
       parse_params [parsed_params]
       run
     end
 
+    # Public: The full name of the Command. This includes the Namespace's name
+    # and the Namespace's ancestor's names.
+    #
+    # Returns a String.
     def full_name
       namespace.nil? ? name.to_s : namespace.full_name(name)
     end
