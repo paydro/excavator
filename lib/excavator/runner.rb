@@ -76,9 +76,7 @@ module Excavator
     # This method is never called directly. See Excavator.run.
     #
     # Returns value returned from the Command.
-    #
-    # TODO Default to ARGV
-    def run(*args)
+    def run(args = ARGV)
       args.flatten!
 
       name = args.delete_at(0)
