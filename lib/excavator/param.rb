@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 module Excavator
 
   # Internal: Param is an object to describe the attributes of a parameter.

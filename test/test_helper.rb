@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 require 'pathname'
 basedir = Pathname.new(File.dirname(__FILE__)).join("..").expand_path
 $LOAD_PATH.unshift(basedir.join("lib").to_s)

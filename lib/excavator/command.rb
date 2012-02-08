@@ -1,4 +1,5 @@
-require 'timeout'
+# -*- encoding: utf-8 -*-
+
 module Excavator
 
   # Public: A Command is building block in Excavator. Commands are built

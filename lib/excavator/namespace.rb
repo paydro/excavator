@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 module Excavator
 
   # Internal: Namespace is a container for other Namespaces and Commands.

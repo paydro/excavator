@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 module Excavator
 
   # Public: Environment instances are created for a Command's block to execute

@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 module Excavator
 
   # Public: DSL is the primary interface for creating commands. When required,

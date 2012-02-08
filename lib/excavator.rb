@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 require 'pathname'
 
 # Excavator automatically creates a command line parser for your params as well
