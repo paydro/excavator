@@ -21,7 +21,7 @@ module Excavator
 
       @parser.banner = @desc
       @parser.separator ""
-      @parser.separator "USAGE: #{@name} [options]"
+      @parser.separator "USAGE: #{@name.to_s} [options]"
       @params.each do |param|
         opts = []
 

@@ -71,5 +71,26 @@ context "Command" do
     end
     assert error.params.include?(:server)
   end
+
+  test "#full_name includes namespace" do
+    ns = Namespace.new(:this_is_not_used_in_full_name)
+    ns1 = Namespace.new(:servers)
+    ns << ns1
+    cmd = Command.new(Excavator.runner)
+    cmd.name = :create
+    cmd.namespace = ns1
+
+    assert_equal "servers:create", cmd.full_name
+  end
+
+  test "#full_name does not include namespace if namespace's parent is nil" do
+    cmd = Command.new(Excavator.runner)
+    cmd.name = :create
+    cmd.namespace = Namespace.new(:servers)
+
+    assert cmd.namespace.parent.nil?
+    assert_equal "create", cmd.full_name
+  end
+
 end # Command
 

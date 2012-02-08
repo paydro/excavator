@@ -19,6 +19,7 @@ module Excavator
     def initialize(runner, options = {})
       @runner            = runner
       @name              = options[:name]
+      @desc              = options[:desc]
       @block             = options[:block]
       @param_definitions = options[:param_definitions] || []
       @namespace         = options[:namespace]
@@ -40,6 +41,10 @@ module Excavator
     def execute_with_params(parsed_params = {})
       parse_params [parsed_params]
       run
+    end
+
+    def full_name
+      namespace.nil? ? name.to_s : namespace.full_name(name)
     end
 
     protected
@@ -65,11 +70,8 @@ module Excavator
 
     def build_parser
       return if @parser_built
-      command_name = ""
-      command_name << "#{namespace.full_name}:" if namespace
-      command_name << name.to_s
       @param_parser.build(
-        :name   => command_name,
+        :name   => full_name,
         :desc   => desc,
         :params => param_definitions
       )

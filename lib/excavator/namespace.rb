@@ -41,7 +41,7 @@ module Excavator
       items = []
       @commands.each do |cmd_name, cmd|
         items << [
-          full_name(cmd_name),
+          cmd.full_name,
           cmd.desc
         ]
       end

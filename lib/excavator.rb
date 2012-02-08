@@ -20,8 +20,8 @@ module Excavator
 
 
   # Public: The global Runner object. This object is called from
-  # Excavator.run to start the whole commandline parsing and command execution
-  # process.
+  # Excavator.run to start the whole command loading, commandline parsing and
+  # command execution process.
   #
   # Returns a Runner class.
   def self.runner

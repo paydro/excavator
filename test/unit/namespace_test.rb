@@ -4,6 +4,7 @@ context "Namespace" do
   include Excavator
 
   setup do
+    Excavator.reset!
     @namespace = Namespace.new
   end
 
@@ -39,17 +40,23 @@ context "Namespace" do
   end
 
   test "#commands_and_descriptions returns names and description" do
-    cmd = MiniTest::Mock.new
-    cmd.expect(:name, "command")
-    cmd.expect(:desc, "command description")
+    cmd = Command.new(
+      Excavator.runner,
+      :name => "command",
+      :desc => "command description",
+      :namespace => @namespace
+    )
     @namespace << cmd
 
     ns1 = Namespace.new("first")
     @namespace << ns1
 
-    inner_cmd = MiniTest::Mock.new
-    inner_cmd.expect(:name, "inner_command")
-    inner_cmd.expect(:desc, "inner command description")
+    inner_cmd = Command.new(
+      Excavator.runner,
+      :name => "inner_command",
+      :desc => "inner command description",
+      :namespace => ns1
+    )
     ns1 << inner_cmd
 
     expected = [
