@@ -13,7 +13,8 @@ module Excavator
   # * Load all Excavator commands.
   # * Provides the object that Excavator::DSL manipulates.
   # * Finds the command from the command line arguments and executes.
-  # * Creates a useful help message to list all commands defined in the library.
+  # * Creates a useful help message to list all commands defined in the
+  #   library.
   #
   class Runner
 
@@ -78,7 +79,8 @@ module Excavator
     # This method is never called directly. See Excavator.run.
     #
     # Returns value returned from the Command.
-    def run(args = ARGV)
+    def run(*args)
+      args = ARGV if args.nil?
       args.flatten!
 
       name = args.delete_at(0)

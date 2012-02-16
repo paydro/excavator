@@ -22,7 +22,6 @@ module Excavator
     @cwd ||= Pathname.new(Dir.pwd).expand_path
   end
 
-
   # Public: The global Runner object. This object is called from
   # Excavator.run to start the whole command loading, commandline parsing and
   # command execution process.
