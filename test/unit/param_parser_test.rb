@@ -46,10 +46,6 @@ context "ParamParser" do
     end
   end
 
-  test "error when param name is help" do
-
-  end
-
   test "use given short switch if specified" do
     param = Param.new(:region, :short => "n")
     @parser.build(:params => [param])
