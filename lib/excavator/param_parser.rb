@@ -30,6 +30,8 @@ module Excavator
   #
   class ParamParser
 
+    class InvalidShortSwitch < ExcavatorError; end
+
     attr_accessor :name
 
     def initialize
@@ -184,6 +186,12 @@ module Excavator
     end
 
     def short_switch(param)
+      if param.short == "h"
+        raise InvalidShortSwitch.new(<<-ERRMSG.strip!)
+          The '-h' short switch is reserved for help.
+        ERRMSG
+      end
+
       # TODO Raise error for params with specified short switches that collide.
       #      For now, we'll assume the user knows if they have the same
       #      short switches when specifying them.
@@ -192,6 +200,7 @@ module Excavator
       param_name = param.name.to_s
       short = nil
       param_name.each_char do |c|
+        next if c == "h"
         short = c
         if @params.detect { |p| p != param && p.short == c }
           short = nil if c == param_name[-1]

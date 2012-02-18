@@ -33,6 +33,23 @@ context "ParamParser" do
     assert_equal({:region => "region", :rate => "rate"}, hash)
   end
 
+  test "does not auto assign -h switch for params" do
+    param1 = Param.new(:hello)
+    @parser.build(:params => [param1])
+    assert_equal "e", param1.short
+  end
+
+  test "error when param sets short switch to -h" do
+    assert_raises ParamParser::InvalidShortSwitch do
+      param = Param.new(:test, :short => 'h')
+      @parser.build(:params => [param])
+    end
+  end
+
+  test "error when param name is help" do
+
+  end
+
   test "use given short switch if specified" do
     param = Param.new(:region, :short => "n")
     @parser.build(:params => [param])
